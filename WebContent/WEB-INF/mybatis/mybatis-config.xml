@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<mappers>
+		<mapper resource="com/customer/mapper/CustomerMapper.xml"/>
+		<mapper class="com.customer.mapper.AnnotationCustomerMapper"/>
+	</mappers>
+</configuration>
+
+<!-- 
+	클래스 맵퍼 등록 시 class 속성을 사용하고, 구분은 .으로 한다.
+ -->
+

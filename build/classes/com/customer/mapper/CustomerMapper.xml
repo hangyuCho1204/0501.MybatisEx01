@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.customer.mapper.CustomerMapper">
+	<resultMap type="com.customer.dto.Customer" id="CustomerResult">
+		<id property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="address" column="address"/>
+		<result property="email" column="email"/>
+	</resultMap>
+	
+	<resultMap type="com.customer.dto.Customer" id="CustomerResult2">
+		<id property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="address" column="address"/>
+		<result property="email" column="email"/>
+	</resultMap>
+	<!--
+		id : pk라고 생각하면 됨 
+		property : Bean의 값
+		column : DB 컬럼의 값
+	 -->
+
+	<select id="findAll" resultMap="CustomerResult">
+		Select * from customer order by Id
+	</select>
+	<!-- 
+		resultMap의 내용을 컬렉션(resultMap)으로 반환
+	 -->
+	 
+	 <select id="findById" parameterType="int" resultType="com.customer.dto.Customer">
+	 	select * from customer where id=#{id}
+	 </select>
+	 <!-- 
+	 	resultType : Bean Type
+	  -->
+	
+	<insert id="save" parameterType="com.customer.dto.Customer">
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			select id1.nextval from dual
+		</selectKey>
+		insert into customer(id, name, address, email) values(#{id}, #{name}, #{address}, #{email})
+		<!-- insert into customer(id, name, address, email) values(id1.nextval, '123', '123', '123') -->
+	</insert>
+	<!-- 
+		order="BEFORE : 쿼리를 실행하기 전에 실행해라
+		order="AFTER : 쿼리를 싱핼한 후에 실행해라
+		selectKey : 키 값을 찾아서 키 객체 변수에 집어 넣을 때 사용 
+	
+		values안에 내용은 객체변수의 이름과 동일 해야함
+	 -->
+	<delete id="remove" parameterType="int">
+		delete customer  where id  = #{id}
+	</delete>
+	
+	<update id="modify" parameterType="com.customer.dto.Customer" >
+		update customer set address = #{address}, email = #{email} where id = #{id} 
+	</update>
+	
+	<select  id="selectLike" parameterType="string" resultMap="CustomerResult" >
+		select * from customer where name like '%'||#{name}||'%'
+	</select>
+	
+	<select  id="pageCount" resultType="int">
+		select count(*) from customer
+	</select>
+	
+	<select  id="findByPage" resultMap="CustomerResult">
+		Select * from customer
+	</select>
+	<!-- parameterType="org.apache.ibatis.session.RowBounds"  -->
+	
+</mapper>
